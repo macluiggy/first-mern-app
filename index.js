@@ -8,7 +8,7 @@ app.get('/', (req, res) => {
 // Settings
 
 
-// Middlewares
+// Middlewares..
 
 
 // Static files
