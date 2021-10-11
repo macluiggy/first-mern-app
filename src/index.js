@@ -6,7 +6,7 @@ require('dotenv').config();
 
 const { mongoose } = require('./database');
 
-// Settings
+// Settings 
 //app.set('port', process.env.PORT || 3000)
 
 // Middlewares
