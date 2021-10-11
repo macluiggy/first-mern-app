@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 
+
 const Task = require('../models/task');
 
 //este nos permite manejar las rutas de las peticiones, en este caso la ruta root
@@ -10,6 +11,11 @@ router.get('/', async (req, res) => {
     res.json({
         status: tasks
     });
+})
+
+router.get('/:id', async (req, res) => {
+    const task = await Task.findById(req.params.id);
+    res.json(task)
 })
 
 router.post('/', async (req, res) => {
@@ -31,6 +37,11 @@ router.put('/:id', async (req, res) => {
     res.json({
         status: newTask
     })
+})
+
+router.delete('/:id', async (req, res) => {
+    await Task.findByIdAndRemove(req.params.id)
+    res.json({status: 'Task deleted'})
 })
 
 module.exports = router;
