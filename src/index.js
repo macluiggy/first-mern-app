@@ -2,11 +2,12 @@ const express = require('express');
 const app = express();
 const morgan = require('morgan');
 const path = require('path');
+require('dotenv').config();
 
-
+const { mongoose } = require('./database');
 
 // Settings
-app.set('port', process.env.PORT || 3000)
+//app.set('port', process.env.PORT || 3000)
 
 // Middlewares
 app.use(morgan('dev'));
@@ -20,7 +21,7 @@ app.use('/api/tasks', require('./routes/task.routes'));
 // Static files
 app.use(express.static(path.join(__dirname, 'public')));
 // Starting the server
-let port = app.get('port');
+let port = process.env.PORT;
 app.listen(port, () => {
     console.log('server is listening on port ' + port);
 })
