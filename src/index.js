@@ -12,6 +12,4 @@ app.get('/', (req, res) => {
 
 
 // Static files
-app.listen(3000, () => {
-    console.log('server is listen on port 3000');
-})
+module.exports = app
