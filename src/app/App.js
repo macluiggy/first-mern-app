@@ -7,6 +7,7 @@ class App extends Component {
         this.state = {
             title: '',
             description: '',
+            tasks: []
         };
         this.addTask = this.addTask.bind(this);
         this.handleChange = this.handleChange.bind(this);
@@ -26,6 +27,7 @@ class App extends Component {
                 console.log(data)
                 M.toast({ html: data.status });
                 this.setState({ title: '', description: '' })
+                this.fetchTasks()
             })
             .catch(err => console.error(err));
         e.preventDefault();
@@ -37,7 +39,12 @@ class App extends Component {
     fetchTasks(e) {
         fetch('/api/tasks')
             .then(res => res.json())
-            .then(data => console.log(data))
+            .then(data => {
+                console.log(data.status)
+                this.setState({
+                    tasks: data.status
+                })
+            })
     }
     handleChange(e) {
         const { name, value } = e.target;
@@ -79,7 +86,34 @@ class App extends Component {
                             </div>
                         </div>
                         <div className="col s7">
-
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Title</th>
+                                        <th>Description</th>
+                                    </tr>     
+                                </thead>
+                                <tbody>
+                                    {
+                                        this.state.tasks.map(task => {
+                                            return (
+                                                <tr key={task._id}>
+                                                    <td>{task.title}</td>
+                                                    <td>{task.description}</td>
+                                                    <td>
+                                                        <button>
+                                                            Edit
+                                                        </button>
+                                                        <button>
+                                                            <i className='material-icons'>delete</i>
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                            )
+                                        })
+                                    }
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
