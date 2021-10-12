@@ -6,17 +6,44 @@ class App extends Component {
         super();
         this.state = {
             title: '',
-            Description: '',
+            description: '',
         };
         this.addTask = this.addTask.bind(this);
+        this.handleChange = this.handleChange.bind(this);
     }
     addTask(e) {
-        console.log(this.state);
+        let req = {
+            method: 'POST',
+            body: JSON.stringify(this.state),
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            }
+        }
+        fetch('/api/tasks', req)
+            .then(res => res.json())
+            .then(data => {
+                console.log(data)
+                M.toast({ html: data.status });
+                this.setState({ title: '', description: '' })
+            })
+            .catch(err => console.error(err));
         e.preventDefault();
     }
 
+    componentDidMount() {
+        this.fetchTasks();
+    }
+    fetchTasks(e) {
+        fetch('/api/tasks')
+            .then(res => res.json())
+            .then(data => console.log(data))
+    }
     handleChange(e) {
-        console.log(e.target.value);
+        const { name, value } = e.target;
+        this.setState({
+            [name]: value
+        }) 
     }
 
     render() {
@@ -36,12 +63,12 @@ class App extends Component {
                                     <form onSubmit={this.addTask}>
                                         <div className="row">
                                             <div className="input-field col s12">
-                                                <input name="title" onChange={this.handleChange} type="text" placeholder="Task Title" />
+                                                <input name="title" onChange={this.handleChange} type="text" placeholder="Task Title" value={this.state.title} />
                                             </div>
                                         </div>
                                         <div className="row">
                                             <div className="input-field col s12">
-                                                <textarea name="description" onChange={this.handleChange} placeholder="Task Description" className="materialize-textarea"></textarea>
+                                                <textarea name="description" onChange={this.handleChange} placeholder="Task Description" className="materialize-textarea" value={this.state.description}></textarea>
                                             </div>
                                         </div>
                                         <button type="submit" className="btn light-blue darken-4">
